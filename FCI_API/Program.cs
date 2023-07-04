@@ -1,4 +1,6 @@
 using FCI_API.Data;
+using FCI_DataAccess.Repository;
+using FCI_DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,19 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+#region AutoMapper
+builder.Services.AddAutoMapper(typeof(FCI_API.Helper.AutoMapper));
+
+
+#endregion
+
+#region Repository
+
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+
+
+#endregion
 
 #region EntityFramwork
 var CoonectioString = builder.Configuration.GetConnectionString("Connection");
@@ -22,6 +37,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
