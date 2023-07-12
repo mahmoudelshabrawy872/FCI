@@ -4,6 +4,7 @@ using FCI_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,16 +12,33 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FCI_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230711182912_SubjectAndDepartmentTable")]
+    partial class SubjectAndDepartmentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("DepartmentSubject", b =>
+                {
+                    b.Property<int>("DepartmentsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubjectsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DepartmentsId", "SubjectsId");
+
+                    b.HasIndex("SubjectsId");
+
+                    b.ToTable("DepartmentSubject");
+                });
 
             modelBuilder.Entity("FCI_API.Models.Post", b =>
                 {
@@ -51,34 +69,6 @@ namespace FCI_DataAccess.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("FCI_DataAccess.Models.ContactUsMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContactUsMessages");
-                });
-
             modelBuilder.Entity("FCI_DataAccess.Models.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -94,12 +84,7 @@ namespace FCI_DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SubjectId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SubjectId");
 
                     b.ToTable("Departments");
                 });
@@ -124,57 +109,19 @@ namespace FCI_DataAccess.Migrations
                     b.ToTable("Subjects");
                 });
 
-            modelBuilder.Entity("FCI_DataAccess.Models.SubjectDepartment", b =>
+            modelBuilder.Entity("DepartmentSubject", b =>
                 {
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("int");
+                    b.HasOne("FCI_DataAccess.Models.Department", null)
+                        .WithMany()
+                        .HasForeignKey("DepartmentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SubjectId", "DepartmentId");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.ToTable("SubjectDepartments");
-                });
-
-            modelBuilder.Entity("FCI_DataAccess.Models.Department", b =>
-                {
                     b.HasOne("FCI_DataAccess.Models.Subject", null)
-                        .WithMany("Departments")
-                        .HasForeignKey("SubjectId");
-                });
-
-            modelBuilder.Entity("FCI_DataAccess.Models.SubjectDepartment", b =>
-                {
-                    b.HasOne("FCI_DataAccess.Models.Department", "Department")
-                        .WithMany("SubjectDepartments")
-                        .HasForeignKey("DepartmentId")
+                        .WithMany()
+                        .HasForeignKey("SubjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("FCI_DataAccess.Models.Subject", "Subject")
-                        .WithMany("SubjectDepartments")
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-
-                    b.Navigation("Subject");
-                });
-
-            modelBuilder.Entity("FCI_DataAccess.Models.Department", b =>
-                {
-                    b.Navigation("SubjectDepartments");
-                });
-
-            modelBuilder.Entity("FCI_DataAccess.Models.Subject", b =>
-                {
-                    b.Navigation("Departments");
-
-                    b.Navigation("SubjectDepartments");
                 });
 #pragma warning restore 612, 618
         }

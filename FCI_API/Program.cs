@@ -12,14 +12,24 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 #region AutoMapper
-builder.Services.AddAutoMapper(typeof(FCI_API.Helper.AutoMapper));
+builder.Services.AddAutoMapper(typeof(FCI_API.Helper.AutoMapperProfile));
 
 
+#endregion
+
+
+#region Cycle
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 #endregion
 
 #region Repository
 
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
 
 #endregion
@@ -29,13 +39,20 @@ var CoonectioString = builder.Configuration.GetConnectionString("Connection");
 builder.Services.AddDbContext<ApplicationDbContext>(Options => Options.UseSqlServer(CoonectioString));
 #endregion
 
+#region Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+#endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+//if (app.Environment.IsDevelopment())
+//{
+app.UseSwagger();
+app.UseSwaggerUI();
 //}
 app.UseCors(policyName: "CorsPolicy");
 

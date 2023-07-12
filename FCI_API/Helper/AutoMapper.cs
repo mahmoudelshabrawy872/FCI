@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using FCI_API.Dto.Department;
 using FCI_API.Dto.Post;
+using FCI_API.Dto.Subject;
 using FCI_API.Models;
+using FCI_DataAccess.Models;
 
 namespace FCI_API.Helper
 {
@@ -16,6 +19,10 @@ namespace FCI_API.Helper
         {
             CreateMap<Post, PostDto>().ReverseMap();
             CreateMap<Post, CreatePostDto>().ReverseMap();
+            CreateMap<Subject, CreateSubjectDto>().ReverseMap();
+            CreateMap<Subject, SubjectDto>().ReverseMap();
+            CreateMap<Department, DepartmentDto>().ReverseMap();
+            CreateMap<Department, CreateDepartmentDto>().ReverseMap();
         }
     }
 }

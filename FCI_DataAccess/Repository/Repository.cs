@@ -44,8 +44,8 @@ namespace FCI_DataAccess.Repository
         public async Task<bool> DeleteAsync(T entity)
         {
             dbSet.Remove(entity);
-            await SaveAsync();
-            if (await SaveAsync() > 0)
+            var resalut = await SaveAsync();
+            if (resalut > 0)
                 return true;
             else
                 return false;
@@ -91,5 +91,20 @@ namespace FCI_DataAccess.Repository
         {
             return await _context.SaveChangesAsync();
         }
+
+
+        public async Task<IEnumerable<T>> GetAllIncludeProperties(string? includeProperties = null)
+        {
+            IQueryable<T> quary = dbSet;
+            if (includeProperties != null)
+            {
+                foreach (var includepror in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    quary = quary.Include(includepror);
+                }
+            }
+            return quary.ToList();
+        }
+
     }
 }

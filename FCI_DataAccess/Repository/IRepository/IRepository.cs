@@ -42,5 +42,10 @@ namespace FCI_DataAccess.Repository.IRepository
         /// </summary>
         /// <returns>The number of affected entities.</returns>
         Task<int> SaveAsync();
+
+
+
+
+        public Task<IEnumerable<T>> GetAllIncludeProperties(string? includeProperties = null);
     }
 }

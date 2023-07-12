@@ -8,7 +8,7 @@ namespace FCI_API.Dto.Post
         public string Titles { get; set; } = null!;
         [MaxLength(2500)]
         public string Body { get; set; } = null!;
-        public IFormFile Image { get; set; }
+        public IFormFile Image { get; set; } = null!;
 
 
     }
