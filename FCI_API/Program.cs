@@ -36,7 +36,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
+app.UseCors(policyName: "CorsPolicy");
+
+app.Map("/", () => Results.Redirect("/swagger"));
+
 app.UseStaticFiles();
 
 app.UseHttpsRedirection();
