@@ -36,7 +36,7 @@ namespace FCI_API.Controllers
             try
             {
 
-                var departments = await _repository.GetAllIncludeProperties("SubjectDepartments"); ;
+                var departments = await _repository.GetAllIncludeProperties("SubjectDepartments");
                 _responseModel.Result = departments;
                 return _responseModel;
 
@@ -59,9 +59,11 @@ namespace FCI_API.Controllers
             try
             {
 
-                var Department = await _repository.GetAsync(s => s.Id == id);
 
-                if (Department == null)
+                var departments = await _repository.GetAllIncludeProperties("SubjectDepartments");
+                departments.FirstOrDefault(m => m.Id == id);
+
+                if (departments == null)
                 {
                     _responseModel.IsSuccess = false;
                     _responseModel.Result = null;
@@ -71,7 +73,7 @@ namespace FCI_API.Controllers
                 }
                 else
                 {
-                    _responseModel.Result = Department;
+                    _responseModel.Result = departments;
                     return _responseModel;
                 }
 

@@ -11,5 +11,6 @@ namespace FCI_API.Dto.Post
         public string Body { get; set; } = null!;
 
         public string? ImageURL { get; set; }
+        public DateTime AddedOn { get; set; }
     }
 }
