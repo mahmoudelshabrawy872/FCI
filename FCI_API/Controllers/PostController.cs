@@ -3,7 +3,9 @@ using FCI_API.Dto.Post;
 using FCI_API.Helper;
 using FCI_API.Models;
 using FCI_DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Net;
 
 namespace FCI_API.Controllers
@@ -74,6 +76,8 @@ namespace FCI_API.Controllers
         /// <param name="dto">The CreatePostDto containing the post data.</param>
         /// <returns>An ActionResult containing the newly created PostDto object.</returns>
         [HttpPost("CreateNewPost")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel>> CreateNewPost([FromForm] CreatePostDto dto)
         {
             try
@@ -122,6 +126,8 @@ namespace FCI_API.Controllers
         /// <param name="dto">The UpdatePostDto containing the updated post data.</param>
         /// <returns>An ActionResult containing the updated PostDto object.</returns>
         [HttpPut("UpdatePost")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel>> UpdatePost([FromForm] UpdatePostDto dto)
         {
             try
@@ -207,6 +213,8 @@ namespace FCI_API.Controllers
         /// <param name="id">The ID of the post to delete.</param>
         /// <returns>An ActionResult indicating the success or failure of the delete operation.</returns>
         [HttpDelete("DeletePost")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel>> DeletePost(int id)
         {
             try

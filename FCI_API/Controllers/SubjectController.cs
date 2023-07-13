@@ -2,6 +2,7 @@
 using FCI_API.Dto.Subject;
 using FCI_API.Helper;
 using FCI_DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -80,6 +81,8 @@ namespace FCI_API.Controllers
         //CreatePostDto
         //// POST: api/subjects
         [HttpPost("CreateSubject")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel>> CreateSubject(CreateSubjectDto dto)
         {
             try
@@ -100,6 +103,8 @@ namespace FCI_API.Controllers
 
         //// PUT: api/subjects/{id}
         [HttpPut("UpdateSubject")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel>> UpdateSubjectNameById([FromQuery] int id, [FromQuery] CreateSubjectDto dto)
         {
             try
@@ -136,6 +141,8 @@ namespace FCI_API.Controllers
 
         //// DELETE: api/subjects/{id}
         [HttpDelete("DeleteSubjectById")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel>> DeleteSubjectById(int id)
         {
             try

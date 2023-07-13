@@ -4,6 +4,7 @@ using FCI_API.Dto.Department;
 using FCI_API.Helper;
 using FCI_DataAccess.Models;
 using FCI_DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -92,6 +93,8 @@ namespace FCI_API.Controllers
         //CreatePostDto
         //// POST: api/Departments
         [HttpPost("CreateDepartment")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel>> CreateDepartment(CreateDepartmentDto dto)
         {
             try
@@ -110,6 +113,8 @@ namespace FCI_API.Controllers
             }
         }
         [HttpPost("AddSubjectToDepartment")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel>> AddSubjectToDepartment(int subjectId, int departmentId)
         {
             try
@@ -154,6 +159,8 @@ namespace FCI_API.Controllers
 
         //// PUT: api/Departments/{id}
         [HttpPut("UpdateDepartment")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel>> UpdateDepartmentNameById([FromQuery] int id, [FromQuery] CreateDepartmentDto dto)
         {
             try
@@ -190,6 +197,8 @@ namespace FCI_API.Controllers
 
         //// DELETE: api/Departments/{id}
         [HttpDelete("DeleteDepartmentById")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel>> DeleteDepartmentById(int id)
         {
             try

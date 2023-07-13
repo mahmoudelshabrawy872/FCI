@@ -1,6 +1,7 @@
 ﻿using FCI_API.Data;
 using FCI_API.Helper;
 using FCI_DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -18,6 +19,8 @@ namespace FCI_API.Controllers
             _responseModel = new ResponseModel();
             _context = context;
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetContactUsMessage")]
         public async Task<ActionResult<ResponseModel>> GetContactUsMessage()
         {
